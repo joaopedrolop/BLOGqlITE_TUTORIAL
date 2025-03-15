@@ -1,24 +1,68 @@
 const express = require("express");
+const sqlite3 = require("sqlite3");
 
 const PORT = 3000;
 
 const app = express();
 
-const index = "<a href='/sobre'>Sobre</a><a href='/info'</a>";
+const db = new sqlite3.Database("user.db");
 
-app.get('/', (req, res) => {
-    res.send("olá senai");
+db.serialize(() => {
+    db.run(
+        "CREATE TABLE IF NOT EXISTS users (id  INTEGER PRIMARY KEY AUTOINCREMENT, username text, password TEXT)"
+    );
+});
+
+const index = "<a href='/sobre'>sobre</a> <br> <a href='/login' >login</a> <br> <a href='/cadastro'>cadastro</a> <br> <a href='/home'>home</a> <br> <a href='/dashboard'>dashboard</a> <br> <a href='/descricao'>descricao</a>";
+const sobre = 'Vc esta na pagina "sobre" <br> <a href="/">Voltar</a>';
+const login = 'Vc esta na pagina "login" <br> <a href="/">Voltar</a>';
+const cadastro = 'Vc esta na pagina "cadastro" <br> <a href="/">Voltar</a>';
+const home = 'Vc esta na pagina "home" <br> <a href="/">Voltar</a>';
+const dashboard = 'Vc esta na pagina "dashboard" <br> <a href="/">Voltar</a>';
+const descricao = 'Vc esta na pagina "descricao" <br> <a href="/">Voltar</a>';
+
+
+app.get("/", (req, res) => {
+    res.send(index);
 });
 
 app.get("/sobre", (req, res) => {
-    res.send("vc esta na pagina sobre");
+    res.send(sobre);
+})
+
+app.get("/login", (req, res) => {
+    res.send(login);
 });
 
-app.get("/info", (req, res) => {
-    res.send("vc esta na pagina info");
+app.get("/cadastro", (req, res) => {
+    res.send(cadastro);
 });
+
+app.get("/home", (req, res) => {
+    res.send(home);
+});
+
+app.get("/dashboard", (req, res) => {
+    res.send(dashboard);
+});
+
+app.get("/descricao", (req, res) => {
+    res.send(descricao);
+});
+
+// app.get('/', (req, res) => {
+//     res.send("olá senai");
+// });
+
+// app.get("/sobre", (req, res) => {
+//     res.send("vc esta na pagina sobre");
+// });
+
+// app.get("/info", (req, res) => {
+//     res.send("vc esta na pagina info");
+// });
 
 
 app.listen(PORT, () => {
     console.log(`servidor sendo execultado na portal 3000 ${PORT}!`);
-});
+});//*
