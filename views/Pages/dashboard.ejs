@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<%- include ('../Partials/head') %>
+
+  <body>
+    <%- include('../Partials/menu'); %>
+
+    <div class="container_rain">
+      <span class="cloud"></span>
+      <span class="cloud"></span>
+      <span class="cloud"></span>
+    </div>
+
+    <section class="container">
+      <div class="image_container">
+        <h1>Sobre nossa empresa</h1>
+        <p>
+          Compartilhe suas aventuras e <br />
+          descubra novos lugares ao redor do mundo!
+        </p>
+      </div>
+
+      <div><%- include('../Partials/usertable') %></div>
+    </section>
+    <%- include('../Partials/footer'); %>
+  </body>
+</html>

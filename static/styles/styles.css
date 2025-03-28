@@ -23,6 +23,36 @@ body {
   align-items: center;
 }
 
+header{
+  font-family:Copperplate;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #0f2a1d;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .logo{
+  color: #fff;
+  font-size: 3em;
+  letter-spacing: 1.5px;
+}
+
+header nav a {
+  color: #fff;
+  font-size: 1.5px;
+  margin-right: 16px;
+}
+
+header nav a:hover{
+  color: #e3eed4;
+}
+
 .container {
   width: 80%;
   height: 80%;
@@ -188,3 +218,5 @@ body {
   color: #0f2a1d;
   transition: 0.7s;
 }
+
+

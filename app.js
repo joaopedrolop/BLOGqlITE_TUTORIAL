@@ -1,6 +1,6 @@
 const express = require("express");
 const sqlite3 = require("sqlite3");
-const bodyParse =require("body-parse");
+const bodyParser =require("body-parser");
 
 const PORT = 3000;
 
@@ -17,7 +17,7 @@ db.serialize(() => {
 
 app.use("/static", express.static(__dirname + "/static"));
 
-app.use(bodyParse.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.set("view engine", "ejs");
 
@@ -26,29 +26,37 @@ const sobre = 'Vc esta na pagina "sobre" <br> <a href="/">Voltar</a>';
 const login = 'Vc esta na pagina "login" <br> <a href="/">Voltar</a>';
 const cadastro = 'Vc esta na pagina "cadastro" <br> <a href="/">Voltar</a>';
 const home = 'Vc esta na pagina "home" <br> <a href="/">Voltar</a>';
-const dashboard = 'Vc esta na pagina "dashboard" <br> <a href="/">Voltar</a>';
+//const dashboard = 'Vc esta na pagina "dashboard" <br> <a href="/">Voltar</a>';
 const descricao = 'Vc esta na pagina "descricao" <br> <a href="/">Voltar</a>';
 
 
 app.get("/", (req, res) => {
     // res.send(index);
-    res.render("login");
+    res.render("Pages/index");
 });
 
 app.get("/sobre", (req, res) => {
-    res.send(sobre);
+    res.send("Pages/sobre");
 })
 
 app.get("/login", (req, res) => {
-    res.render(login);
+    res.render("Pages/login");
 });
 
 app.post("/login", (req, res) => {
     res.send("login ainda não implementado.");
 });
 
+app.get("/dashboard", (req, res) => {
+    res.render("Pages/dashboard");
+});
+
 app.get("/cadastro", (req, res) => {
-    res.send(cadastro);
+    res.render("Pages/cadastro");
+});
+
+app.get("/cadastro", (req, res) => {
+    res.send("Pages/cadastro");
 });
 
 app.post("/cadastro", (req, res) => {
@@ -65,9 +73,9 @@ app.get("/home", (req, res) => {
     res.send(home);
 });
 
-app.get("/dashboard", (req, res) => {
-    res.send(dashboard);
-});
+//app.get("/dashboard", (req, res) => {
+    //res.send(dashboard);
+//});
 
 app.get("/descricao", (req, res) => {
     res.send(descricao);
