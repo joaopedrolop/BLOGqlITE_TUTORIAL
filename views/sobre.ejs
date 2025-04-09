@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atividade Formulário</title>
+
+    <!-- LINK PARA CSS EXTERNO -->
+    <link rel="stylesheet" href="/static/styles/styles.css" />
+
+    <!-- LINK PARA JS EXTERNO -->
+    <!-- <script src="/static/script/script.js" defer></script> -->
+  </head>
+  <body>
+    <%- include("menu"); %>
+
+    <div class="container_rain">
+      <span class="cloud"></span>
+      <span class="cloud"></span>
+      <span class="cloud"></span>
+    </div>
+
+    <section class="container">
+      <div class="image_container">
+        <h1>Sobre nossa empresa</h1>
+        <p>
+          Compartilhe suas aventuras e <br />
+          descubra novos lugares ao redor do mundo!
+        </p>
+      </div>
+
+      <div><%- include("userTable") %></div>
+    </section>
+    <%- include("footer"); %>
+  </body>
+</html>

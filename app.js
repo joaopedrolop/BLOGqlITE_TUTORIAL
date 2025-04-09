@@ -1,6 +1,10 @@
 const express = require("express");
 const sqlite3 = require("sqlite3");
+<<<<<<< HEAD
 const bodyParser =require("body-parser");
+=======
+const bodyParse =require("body-parser");
+>>>>>>> 7944117 (atualização dois)
 
 const PORT = 3000;
 
@@ -22,16 +26,26 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
 const index = "<a href='/sobre'>sobre</a> <br> <a href='/login' >login</a> <br> <a href='/cadastro'>cadastro</a> <br> <a href='/home'>home</a> <br> <a href='/dashboard'>dashboard</a> <br> <a href='/descricao'>descricao</a>";
+<<<<<<< HEAD
 const sobre = 'Vc esta na pagina "sobre" <br> <a href="/">Voltar</a>';
 const login = 'Vc esta na pagina "login" <br> <a href="/">Voltar</a>';
 const cadastro = 'Vc esta na pagina "cadastro" <br> <a href="/">Voltar</a>';
 const home = 'Vc esta na pagina "home" <br> <a href="/">Voltar</a>';
 //const dashboard = 'Vc esta na pagina "dashboard" <br> <a href="/">Voltar</a>';
 const descricao = 'Vc esta na pagina "descricao" <br> <a href="/">Voltar</a>';
+=======
+const sobre = "sobre";
+// const login = 'Vc esta na pagina "login" <br> <a href="/">Voltar</a>';
+// const cadastro = 'Vc esta na pagina "cadastro" <br> <a href="/">Voltar</a>';
+// const home = 'Vc esta na pagina "home" <br> <a href="/">Voltar</a>';
+// const dashboard = 'Vc esta na pagina "dashboard" <br> <a href="/">Voltar</a>';
+// const descricao = 'Vc esta na pagina "descricao" <br> <a href="/">Voltar</a>';
+>>>>>>> 7944117 (atualização dois)
 
 
 app.get("/", (req, res) => {
     // res.send(index);
+<<<<<<< HEAD
     res.render("Pages/index");
 });
 
@@ -57,19 +71,74 @@ app.get("/cadastro", (req, res) => {
 
 app.get("/cadastro", (req, res) => {
     res.send("Pages/cadastro");
+=======
+    console.log("GET /index")
+    res.render("index");
+});
+
+app.get("/sobre", (req, res) => {
+    console.log("GET /index");
+    res.render(sobre);
+})
+
+app.get("/login", (req, res) => {
+    console.log("GET /login");
+    res.render("login");
+});
+
+app.post("/login", (req, res) => {
+    console.log("POST /login");
+    res.send(cadastro);
+>>>>>>> 7944117 (atualização dois)
+});
+
+app.get("/usuarios", (req, res) => {
+    const query = "SELECT * FROM users";
+    db.all(query, (err, row) =>{
+        console.log(`GET /usuarios ${JSON.stringify(row)}`)
+        res.send("Lista de usuarios.")
+    });
+});
+
+app.get("/cadastro", (req, res) => {
+    console.log("GET /cadastro");
+    res.render("cadastro");
 });
 
 app.post("/cadastro", (req, res) => {
+    console.log("POST /cadastro")
     res.body ? 
     console.log(JSON.stringify(req.body))
     : console.log(`Body vazio: ${req.body}`)
+
+    const { username, password, email, celular, cpf, rg}=res.body;
+
+    const query=
+    "SELECT * FROM users WHERE email=? OR cpf = ? OR rg= ? OR username=?";
+    db.get(query,[email, cpf, rg, username], (err, row) => {
+        if (err) throw err; 
+        if (row) {
+            res.send("Usuário já cadastrdo, refaça o cadastro!")
+                }else{
+                    const insertQuery = "INSERT INTO user (username, password, email, celular, cpf, rg) VALUES (?,?,?,?,?,?)"
+                db.run(insertQuery, [username, password, email, celular, cpf, rg], err => {
+                    if (err) throw err;
+                    res.send("Usuário cadastado com sucesso!")
+                });
+                }
+    });
+    console.log(`${JSON.stringify}`)
+
+
+    })
     
-    res.send(
-        `Bem-vindo usuario: ${req.body.username}, seu email é ${req.body.email}`
-    );
-});
+    // res.render(
+    //     `Bem-vindo usuario: ${req.body.username}, seu email é ${req.body.email}`
+    //);
+
 
 app.get("/home", (req, res) => {
+    
     res.send(home);
 });
 
