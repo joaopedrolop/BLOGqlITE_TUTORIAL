@@ -1,10 +1,10 @@
 const express = require("express");
 const sqlite3 = require("sqlite3");
-<<<<<<< HEAD
+ HEAD
 const bodyParser =require("body-parser");
-=======
+
 const bodyParse =require("body-parser");
->>>>>>> 7944117 (atualização dois)
+ 7944117 (atualização)
 
 const PORT = 3000;
 
@@ -26,26 +26,25 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
 const index = "<a href='/sobre'>sobre</a> <br> <a href='/login' >login</a> <br> <a href='/cadastro'>cadastro</a> <br> <a href='/home'>home</a> <br> <a href='/dashboard'>dashboard</a> <br> <a href='/descricao'>descricao</a>";
-<<<<<<< HEAD
+ HEAD
 const sobre = 'Vc esta na pagina "sobre" <br> <a href="/">Voltar</a>';
 const login = 'Vc esta na pagina "login" <br> <a href="/">Voltar</a>';
 const cadastro = 'Vc esta na pagina "cadastro" <br> <a href="/">Voltar</a>';
 const home = 'Vc esta na pagina "home" <br> <a href="/">Voltar</a>';
 //const dashboard = 'Vc esta na pagina "dashboard" <br> <a href="/">Voltar</a>';
 const descricao = 'Vc esta na pagina "descricao" <br> <a href="/">Voltar</a>';
-=======
+
 const sobre = "sobre";
 // const login = 'Vc esta na pagina "login" <br> <a href="/">Voltar</a>';
 // const cadastro = 'Vc esta na pagina "cadastro" <br> <a href="/">Voltar</a>';
 // const home = 'Vc esta na pagina "home" <br> <a href="/">Voltar</a>';
 // const dashboard = 'Vc esta na pagina "dashboard" <br> <a href="/">Voltar</a>';
 // const descricao = 'Vc esta na pagina "descricao" <br> <a href="/">Voltar</a>';
->>>>>>> 7944117 (atualização dois)
+ 7944117 (atualização dois)
 
 
 app.get("/", (req, res) => {
     // res.send(index);
-<<<<<<< HEAD
     res.render("Pages/index");
 });
 
@@ -71,7 +70,6 @@ app.get("/cadastro", (req, res) => {
 
 app.get("/cadastro", (req, res) => {
     res.send("Pages/cadastro");
-=======
     console.log("GET /index")
     res.render("index");
 });
