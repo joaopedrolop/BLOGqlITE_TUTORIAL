@@ -1,14 +1,15 @@
 const express = require("express");
 const sqlite3 = require("sqlite3");
- HEAD
 const bodyParser =require("body-parser");
 
 const bodyParse =require("body-parser");
- 7944117 (atualização)
+
 
 const PORT = 3000;
 
 const app = express();
+
+let config = { titulo: "", rodape: ""};
 
 const db = new sqlite3.Database("user.db");
 
@@ -26,7 +27,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
 const index = "<a href='/sobre'>sobre</a> <br> <a href='/login' >login</a> <br> <a href='/cadastro'>cadastro</a> <br> <a href='/home'>home</a> <br> <a href='/dashboard'>dashboard</a> <br> <a href='/descricao'>descricao</a>";
- HEAD
 const sobre = 'Vc esta na pagina "sobre" <br> <a href="/">Voltar</a>';
 const login = 'Vc esta na pagina "login" <br> <a href="/">Voltar</a>';
 const cadastro = 'Vc esta na pagina "cadastro" <br> <a href="/">Voltar</a>';
@@ -34,13 +34,12 @@ const home = 'Vc esta na pagina "home" <br> <a href="/">Voltar</a>';
 //const dashboard = 'Vc esta na pagina "dashboard" <br> <a href="/">Voltar</a>';
 const descricao = 'Vc esta na pagina "descricao" <br> <a href="/">Voltar</a>';
 
-const sobre = "sobre";
+//const sobre = "sobre";
 // const login = 'Vc esta na pagina "login" <br> <a href="/">Voltar</a>';
 // const cadastro = 'Vc esta na pagina "cadastro" <br> <a href="/">Voltar</a>';
 // const home = 'Vc esta na pagina "home" <br> <a href="/">Voltar</a>';
 // const dashboard = 'Vc esta na pagina "dashboard" <br> <a href="/">Voltar</a>';
 // const descricao = 'Vc esta na pagina "descricao" <br> <a href="/">Voltar</a>';
- 7944117 (atualização dois)
 
 
 app.get("/", (req, res) => {
@@ -49,7 +48,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/sobre", (req, res) => {
-    res.send("Pages/sobre");
+    res.render("Pages/sobre");
 })
 
 app.get("/login", (req, res) => {
@@ -77,6 +76,9 @@ app.get("/cadastro", (req, res) => {
 app.get("/sobre", (req, res) => {
     console.log("GET /index");
     res.render(sobre);
+
+    config = {titulo: "blog da turma 12hna -sesi nova odessa", rodape: ""};
+    res.render("Pages/index", config);
 })
 
 app.get("/login", (req, res) => {
@@ -87,14 +89,14 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => {
     console.log("POST /login");
     res.send(cadastro);
->>>>>>> 7944117 (atualização dois)
 });
 
 app.get("/usuarios", (req, res) => {
     const query = "SELECT * FROM users";
     db.all(query, (err, row) =>{
         console.log(`GET /usuarios ${JSON.stringify(row)}`)
-        res.send("Lista de usuarios.")
+        //res.send("Lista de usuarios.")
+        res.render("Partials/usertable", config);
     });
 });
 

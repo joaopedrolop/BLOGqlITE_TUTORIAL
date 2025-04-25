@@ -33,7 +33,7 @@ header {
 }
 
 header {
-  >>>>>>>7944117 (atualização dois) width: 100%;
+  width: 100%;
   padding: 10px 15px;
   background-color: #0f2a1d;
   position: absolute;
@@ -154,7 +154,7 @@ header nav a:hover {
 }
 
 .container {
-  >>>>>>>7944117 (atualização dois) width: 80%;
+  width: 80%;
   height: 80%;
   background-color: #e3eed4;
   border-radius: 30px;
