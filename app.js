@@ -37,7 +37,7 @@ app.set("view engine", "ejs");
 
 const index = "<a href='/sobre'>sobre</a> <br> <a href='/login' >login</a> <br> <a href='/cadastro'>cadastro</a> <br> <a href='/home'>home</a> <br> <a href='/dashboard'>dashboard</a> <br> <a href='/descricao'>descricao</a>";
 const sobre = 'Vc esta na pagina "sobre" <br> <a href="/">Voltar</a>';
-const login = 'Vc esta na pagina "login" <br> <a href="/">Voltar</a>';
+// const login = 'Vc esta na pagina "login" <br> <a href="/">Voltar</a>';
 const cadastro = 'Vc esta na pagina "cadastro" <br> <a href="/">Voltar</a>';
 const home = 'Vc esta na pagina "home" <br> <a href="/">Voltar</a>';
 //const dashboard = 'Vc esta na pagina "dashboard" <br> <a href="/">Voltar</a>';
@@ -60,9 +60,9 @@ app.get("/sobre", (req, res) => {
     res.render("Pages/sobre");
 })
 
-app.get("/login", (req, res) => {
-    res.render("Pages/login");
-});
+// app.get("/login", (req, res) => {
+//     res.render("Pages/login");
+// });
 
 // app.post("/login", (req, res) => {
 
@@ -73,15 +73,20 @@ app.get("/dashboard", (req, res) => {
     res.render("Pages/dashboard");
 });
 
-app.get("/cadastro", (req, res) => {
-    res.render("Pages/cadastro");
-});
+// app.get("/cadastro", (req, res) => {
+//     res.render("Pages/cadastro");
+// });
+
+// app.get("/cadastro", (req, res) => {
+//     res.send("Pages/cadastro");
+//     console.log("GET /index")
+//     res.render("index");
+// });
 
 app.get("/cadastro", (req, res) => {
-    res.send("Pages/cadastro");
-    console.log("GET /index")
-    res.render("index");
-});
+    console.log("GET /cadastro");
+    res.render("Pages/cadastro", config)
+})
 
 app.get("/sobre", (req, res) => {
     console.log("GET /index");
