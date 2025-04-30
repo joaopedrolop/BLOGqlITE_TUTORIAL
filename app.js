@@ -1,15 +1,16 @@
 const express = require("express");
 const sqlite3 = require("sqlite3");
-const bodyParser =require("body-parser");
+const bodyParser = require("body-parser");
+const session = require("express-session")
 
-const bodyParse =require("body-parser");
+const bodyParse = require("body-parser");
 
 
 const PORT = 3000;
 
 const app = express();
 
-let config = { titulo: "", rodape: ""};
+let config = { titulo: "", rodape: "" };
 
 const db = new sqlite3.Database("user.db");
 
@@ -20,9 +21,17 @@ db.serialize(() => {
     );
 });
 
+app.use(
+    session({
+        secret: "qualquersenha",
+        resave: true,
+        saveUninitialized: true,
+    })
+);
+
 app.use("/static", express.static(__dirname + "/static"));
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set("view engine", "ejs");
 
@@ -55,9 +64,10 @@ app.get("/login", (req, res) => {
     res.render("Pages/login");
 });
 
-app.post("/login", (req, res) => {
-    res.send("login ainda não implementado.");
-});
+// app.post("/login", (req, res) => {
+
+//     res.send("login ainda não implementado.");
+// });
 
 app.get("/dashboard", (req, res) => {
     res.render("Pages/dashboard");
@@ -77,7 +87,7 @@ app.get("/sobre", (req, res) => {
     console.log("GET /index");
     res.render(sobre);
 
-    config = {titulo: "blog da turma 12hna -sesi nova odessa", rodape: ""};
+    config = { titulo: "blog da turma 12hna -sesi nova odessa", rodape: "" };
     res.render("Pages/index", config);
 })
 
@@ -88,12 +98,30 @@ app.get("/login", (req, res) => {
 
 app.post("/login", (req, res) => {
     console.log("POST /login");
-    res.send(cadastro);
+    // res.send(cadastro);
+    const { username, password } = req.body;
+
+    const query = "SELECT * FROM users WHERE username = ? AND password = ?"
+    //consultar o usuario no banco de dados 
+    db.get(query, [username, password], (err, row) => {
+        if (err) throw err;
+
+        if (row) {
+            req.session.loggedin = true;
+            req.session.username = username;
+            res.redirect("/dashboard");
+        }
+        else {
+            res.send("Usuario invalido.");
+        }
+    });
+    //se o ussuario valido -> registra a sessão e redireciona par o dashborad
+    //se não enviar mensagem de erro
 });
 
 app.get("/usuarios", (req, res) => {
     const query = "SELECT * FROM users";
-    db.all(query, (err, row) =>{
+    db.all(query, (err, row) => {
         console.log(`GET /usuarios ${JSON.stringify(row)}`)
         //res.send("Lista de usuarios.")
         res.render("Partials/usertable", config);
@@ -107,43 +135,41 @@ app.get("/cadastro", (req, res) => {
 
 app.post("/cadastro", (req, res) => {
     console.log("POST /cadastro")
-    res.body ? 
-    console.log(JSON.stringify(req.body))
-    : console.log(`Body vazio: ${req.body}`)
+    !res.body ?
+        console.log(JSON.stringify(req.body))
+        : console.log(`Body vazio: ${JSON.stringify(req.body)}`)
 
-    const { username, password, email, celular, cpf, rg}=res.body;
+    const { username, password, email, celular, cpf, rg } = req.body;
 
-    const query=
-    "SELECT * FROM users WHERE email=? OR cpf = ? OR rg= ? OR username=?";
-    db.get(query,[email, cpf, rg, username], (err, row) => {
-        if (err) throw err; 
+    const query =
+        "SELECT * FROM users WHERE email=? OR cpf = ? OR rg= ? OR username=?";
+    db.get(query, [email, cpf, rg, username], (err, row) => {
+        if (err) throw err;
         if (row) {
             res.send("Usuário já cadastrdo, refaça o cadastro!")
-                }else{
-                    const insertQuery = "INSERT INTO user (username, password, email, celular, cpf, rg) VALUES (?,?,?,?,?,?)"
-                db.run(insertQuery, [username, password, email, celular, cpf, rg], err => {
-                    if (err) throw err;
-                    res.send("Usuário cadastado com sucesso!")
-                });
-                }
+        } else {
+            const insertQuery = "INSERT INTO users (username, password, email, celular, cpf, rg) VALUES (?,?,?,?,?,?)"
+            db.run(insertQuery, [username, password, email, celular, cpf, rg], (err) => {
+                if (err) throw err;
+                res.send("Usuário cadastado com sucesso!")
+            });
+        }
     });
     console.log(`${JSON.stringify}`)
+})
 
-
-    })
-    
-    // res.render(
-    //     `Bem-vindo usuario: ${req.body.username}, seu email é ${req.body.email}`
-    //);
+// res.render(
+//     `Bem-vindo usuario: ${req.body.username}, seu email é ${req.body.email}`
+//);
 
 
 app.get("/home", (req, res) => {
-    
+
     res.send(home);
 });
 
 //app.get("/dashboard", (req, res) => {
-    //res.send(dashboard);
+//res.send(dashboard);
 //});
 
 app.get("/descricao", (req, res) => {
