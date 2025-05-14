@@ -53,44 +53,23 @@ const descricao = 'Vc esta na pagina "descricao" <br> <a href="/">Voltar</a>';
 
 app.get("/", (req, res) => {
     // res.send(index);
-    res.render("Pages/index");
+    // res.render("Pages/index");
+    res.render("Pages/index", { ...config, req: req });
 });
 
 app.get("/sobre", (req, res) => {
-    res.render("Pages/sobre");
+    res.render("Pages/sobre", { ...config, req: req });
 })
 
-// app.get("/login", (req, res) => {
-//     res.render("Pages/login");
-// });
-
-// app.post("/login", (req, res) => {
-
-//     res.send("login ainda não implementado.");
-// });
-
-app.get("/dashboard", (req, res) => {
-    res.render("Pages/dashboard");
-});
-
-// app.get("/cadastro", (req, res) => {
-//     res.render("Pages/cadastro");
-// });
-
-// app.get("/cadastro", (req, res) => {
-//     res.send("Pages/cadastro");
-//     console.log("GET /index")
-//     res.render("index");
-// });
 
 app.get("/cadastro", (req, res) => {
     console.log("GET /cadastro");
-    res.render("Pages/cadastro", config)
+    res.render("Pages/cadastro", { ...config, req: req });
 })
 
 app.get("/sobre", (req, res) => {
     console.log("GET /index");
-    res.render(sobre);
+    res.render("Pages/sobre", { ...config, req: req });
 
     config = { titulo: "blog da turma 12hna -sesi nova odessa", rodape: "" };
     res.render("Pages/index", config);
@@ -98,18 +77,20 @@ app.get("/sobre", (req, res) => {
 
 app.get("/login", (req, res) => {
     console.log("GET /login");
-    res.render("login");
+    res.render("Pages/login", { ...config, req: req });
 });
 
 app.post("/login", (req, res) => {
     console.log("POST /login");
     // res.send(cadastro);
     const { username, password } = req.body;
+    console.log(`req.body: ${JSON.stringify(req.body)}`)
 
-    const query = "SELECT * FROM users WHERE username = ? AND password = ?"
+    const query = "SELECT * FROM users WHERE username=? AND password=?"
     //consultar o usuario no banco de dados 
     db.get(query, [username, password], (err, row) => {
         if (err) throw err;
+        console.log(`SELECT: ${JSON.stringify(row)}`);
 
         if (row) {
             req.session.loggedin = true;
@@ -151,7 +132,7 @@ app.post("/cadastro", (req, res) => {
     db.get(query, [email, cpf, rg, username], (err, row) => {
         if (err) throw err;
         if (row) {
-            res.send("Usuário já cadastrdo, refaça o cadastro!")
+            res.send("Usuário já cadastrado, refaça o cadastro!")
         } else {
             const insertQuery = "INSERT INTO users (username, password, email, celular, cpf, rg) VALUES (?,?,?,?,?,?)"
             db.run(insertQuery, [username, password, email, celular, cpf, rg], (err) => {
@@ -170,7 +151,7 @@ app.post("/cadastro", (req, res) => {
 
 app.get("/home", (req, res) => {
 
-    res.send(home);
+    res.redirect("/");
 });
 
 //app.get("/dashboard", (req, res) => {
@@ -179,6 +160,33 @@ app.get("/home", (req, res) => {
 
 app.get("/descricao", (req, res) => {
     res.send(descricao);
+});
+
+
+app.get("/logout", (req, res) => {
+    req.session.destroy((login) => {
+        res.redirect("/cadastro");
+    });
+});
+
+
+app.get("/dashboard", (req, res) => {
+    console.log("GET/dashboard");
+    console.log(`${JSON.stringify(req.session)}`);
+
+    if (req.session.loggedin) {
+        const query = "SELECT * FROM users";
+
+        db.all(query, (err, rows) => {
+            if (err) throw err;
+            //if (row) {
+            console.log(rows);
+            res.render("Pages/dashboard", { ...config, row: rows, req: req });
+            //}
+        });
+    } else {
+        res.redirect("/");
+    }
 });
 
 // app.get('/', (req, res) => {
@@ -192,6 +200,9 @@ app.get("/descricao", (req, res) => {
 // app.get("/info", (req, res) => {
 //     res.send("vc esta na pagina info");
 // });
+app.use('*', (req, res) => {
+    res.status(404).render('Pages/404', { ...config, req: req});
+});
 
 
 app.listen(PORT, () => {

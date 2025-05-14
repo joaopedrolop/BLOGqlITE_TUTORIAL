@@ -8,10 +8,15 @@
       </tr>
     </thead>
     <tbody>
-      <!-- <th>ID</th>
-        <th>NOME</th>
-        <tr>EMAIL</th>
-        <th>CELULAR</th> -->
+      <% let index=1; dados.forEach(user => { %>
+        <tr <%- req.session.username==user.username ? `styles="color: white; font-style: bold;"` : ``%>>
+          <td><%= user.id %></td>
+          <td><%= user.username %></td>
+          <td><%= user.email %></td>
+          <td><%= user.celular %></td>
+          <td><%= user.password %></td>
+        </tr>
+        <% index++; }); %>
 
       <% for( let i = 1; i <= 11; i++ ) { %> 
         <% if (i %- 2 == 0) { %>
