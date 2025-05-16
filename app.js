@@ -181,7 +181,7 @@ app.get("/dashboard", (req, res) => {
             if (err) throw err;
             //if (row) {
             console.log(rows);
-            res.render("Pages/dashboard", { ...config, row: rows, req: req });
+            res.render("Pages/dashboard", { ...config, dados: rows, req: req });
             //}
         });
     } else {
