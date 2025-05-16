@@ -119,6 +119,16 @@ app.get("/cadastro", (req, res) => {
     res.render("cadastro");
 });
 
+app.get("/usuarioCadastrado", (req, res) => {
+    console.log("GET/usuarioCadastrado");
+    res.render("Pages/usuarioCadastrado", { ...config, req: req });
+});
+
+app.get("/usuarionaoCadastrado", (req, res) => {
+    console.log("GET/usuarionaoCadastrado");
+    res.render("Pages/usuarionaoCadastrado", { ...config, req: req });
+});
+
 app.post("/cadastro", (req, res) => {
     console.log("POST /cadastro")
     !res.body ?
@@ -132,12 +142,12 @@ app.post("/cadastro", (req, res) => {
     db.get(query, [email, cpf, rg, username], (err, row) => {
         if (err) throw err;
         if (row) {
-            res.send("Usuário já cadastrado, refaça o cadastro!")
+            res.redirect("/usuarionaoCadastrado")
         } else {
             const insertQuery = "INSERT INTO users (username, password, email, celular, cpf, rg) VALUES (?,?,?,?,?,?)"
             db.run(insertQuery, [username, password, email, celular, cpf, rg], (err) => {
                 if (err) throw err;
-                res.send("Usuário cadastado com sucesso!")
+                res.redirect("/usuarioCadastrado")
             });
         }
     });
